@@ -1,0 +1,1400 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Family 100 Sejarah Kelas X - Bab 1 Konsep Dasar Sejarah</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #311042 100%);
+            min-height: 100vh;
+        }
+        .font-game {
+            font-family: 'Fredoka One', cursive;
+        }
+        .card-flip {
+            perspective: 1000px;
+        }
+        .card-inner {
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        .card-inner.flipped {
+            transform: rotateX(180deg);
+        }
+        .card-front, .card-back {
+            backface-visibility: hidden;
+        }
+        .card-back {
+            transform: rotateX(180deg);
+        }
+        .active-team-glow-blue {
+            box-shadow: 0 0 30px rgba(59, 130, 246, 0.8);
+            border-color: #60a5fa !important;
+        }
+        .active-team-glow-red {
+            box-shadow: 0 0 30px rgba(239, 68, 68, 0.8);
+            border-color: #f87171 !important;
+        }
+        @keyframes strikePop {
+            0% { transform: scale(0.2) rotate(-15deg); opacity: 0; }
+            50% { transform: scale(1.2) rotate(5deg); opacity: 1; }
+            80% { transform: scale(1) rotate(0deg); opacity: 1; }
+            100% { transform: scale(1.1); opacity: 0; }
+        }
+        .animate-strike {
+            animation: strikePop 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+        @keyframes scoreFloat {
+            0% { transform: translateY(0) scale(0.8); opacity: 0; }
+            50% { transform: translateY(-30px) scale(1.2); opacity: 1; }
+            100% { transform: translateY(-60px) scale(1); opacity: 0; }
+        }
+        .animate-score-popup {
+            animation: scoreFloat 1.2s ease-out forwards;
+        }
+    </style>
+</head>
+<body class="text-white pb-10 relative">
+
+    
+    <!-- Opening / Welcome Screen Modal with Curtain Effect -->
+    <div id="opening-screen" class="fixed inset-0 z-50 bg-slate-950 flex flex-col items-center justify-center p-4 overflow-hidden transition-all duration-1000">
+        <!-- Curtain Left -->
+        <div id="curtain-left" class="absolute inset-y-0 left-0 w-1/2 bg-gradient-to-r from-red-950 via-red-900 to-red-950 border-r-4 border-amber-500/80 shadow-2xl z-20 transition-transform duration-1000 ease-in-out flex items-center justify-end pr-8">
+            <div class="text-amber-500/20 text-8xl font-game select-none"><i class="fa-solid fa-masks-theater"></i></div>
+        </div>
+        <!-- Curtain Right -->
+        <div id="curtain-right" class="absolute inset-y-0 right-0 w-1/2 bg-gradient-to-l from-red-950 via-red-900 to-red-950 border-l-4 border-amber-500/80 shadow-2xl z-20 transition-transform duration-1000 ease-in-out flex items-center justify-start pl-8">
+            <div class="text-amber-500/20 text-8xl font-game select-none"><i class="fa-solid fa-masks-theater"></i></div>
+        </div>
+
+        <!-- Opening Content Card -->
+        <div id="opening-card" class="max-w-md w-full bg-slate-900 border-2 border-amber-500/50 rounded-3xl p-8 text-center shadow-2xl relative z-30 transition-all duration-500">
+            <div class="absolute -top-12 -right-12 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl pointer-events-none"></div>
+            
+            <div class="w-16 h-16 bg-amber-500 rounded-2xl mx-auto flex items-center justify-center text-slate-950 font-black text-3xl shadow-lg mb-4 animate-bounce">
+                <i class="fa-solid fa-gamepad"></i>
+            </div>
+            
+            <h1 class="text-3xl font-black font-game text-amber-400 tracking-wider mb-2">FAMILY 100 SEJARAH</h1>
+            <p class="text-xs text-slate-400 font-semibold mb-6">Bab 1 Konsep Dasar Sejarah - SMK Kelas X</p>
+            
+            <div class="space-y-4 mb-6 text-left">
+                <div>
+                    <label class="block text-xs font-bold text-blue-400 uppercase mb-1">Nama Tim A:</label>
+                    <input type="text" id="setup-teamA-name" value="TIM A" class="w-full bg-slate-950 border border-slate-700 text-blue-300 font-bold px-4 py-2.5 rounded-xl focus:outline-none focus:border-blue-500 text-sm">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-red-400 uppercase mb-1">Nama Tim B:</label>
+                    <input type="text" id="setup-teamB-name" value="TIM B" class="w-full bg-slate-950 border border-slate-700 text-red-300 font-bold px-4 py-2.5 rounded-xl focus:outline-none focus:border-red-500 text-sm">
+                </div>
+            </div>
+
+            <button onclick="startGameFromOpening()" class="w-full py-4 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black font-game rounded-2xl text-lg shadow-xl transition transform active:scale-95 flex items-center justify-center gap-2">
+                <i class="fa-solid fa-play"></i> MULAI
+            </button>
+        </div>
+    </div>
+
+
+    <!-- Big Strike Overlay Popup -->
+    <div id="strike-overlay" class="fixed inset-0 z-50 pointer-events-none flex items-center justify-center hidden">
+        <div class="bg-rose-950/90 border-4 border-rose-500 rounded-3xl p-8 sm:p-12 shadow-2xl flex flex-col items-center animate-strike">
+            <span class="text-rose-500 text-8xl sm:text-9xl font-black drop-shadow-[0_0_30px_rgba(244,63,94,0.8)]">
+                <i class="fa-solid fa-xmark"></i>
+            </span>
+            <span class="text-rose-200 font-game text-3xl sm:text-4xl mt-2 tracking-wider uppercase">JAWABAN SALAH!</span>
+        </div>
+    </div>
+
+    <!-- Floating Points Popup -->
+    <div id="score-popup-overlay" class="fixed inset-0 z-40 pointer-events-none flex items-center justify-center hidden">
+        <div id="score-popup-text" class="text-amber-400 font-game text-5xl sm:text-7xl font-black drop-shadow-[0_0_25px_rgba(251,191,36,0.9)] animate-score-popup">
+            +100 POIN!
+        </div>
+    </div>
+
+    <div class="max-w-6xl mx-auto px-4 pt-6">
+        <!-- Header -->
+        <header class="flex flex-wrap justify-between items-center bg-slate-900/80 backdrop-blur border border-slate-700/60 p-4 rounded-2xl mb-6 shadow-2xl">
+            <div class="flex items-center space-x-3">
+                <div class="w-12 h-12 bg-amber-500 rounded-xl flex items-center justify-center text-slate-950 font-black text-2xl shadow-lg">
+                    <i class="fa-solid fa-gamepad"></i>
+                </div>
+                <div>
+                    <h1 class="text-2xl font-black font-game tracking-wider text-amber-400">FAMILY 100 SEJARAH</h1>
+                    <p class="text-xs text-slate-400 font-semibold">SMK Kelas X - Bab 1 Konsep Dasar Sejarah (5 Ronde)</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4 my-2 sm:my-0">
+                <div class="bg-slate-800/90 border border-slate-700 px-4 py-2 rounded-xl text-center">
+                    <span class="text-xs text-slate-400 uppercase font-bold block">Status Ronde</span>
+                    <span id="round-indicator" class="text-amber-400 font-bold font-game text-lg">Ronde 1 (Soal 1/10)</span>
+                </div>
+                <div class="bg-amber-500/10 border border-amber-500/30 px-4 py-2 rounded-xl text-center">
+                    <span class="text-xs text-amber-300 uppercase font-bold block">Tipe Soal</span>
+                    <span id="question-type-badge" class="text-amber-400 font-bold text-sm">Poin (Survei)</span>
+                </div>
+            </div>
+
+            <div class="flex gap-2">
+                <button onclick="resetGame()" class="px-3 py-2 bg-rose-600 hover:bg-rose-500 text-white rounded-xl text-xs font-bold transition flex items-center gap-1">
+                    <i class="fa-solid fa-rotate-right"></i> Reset Game
+                </button>
+            </div>
+        </header>
+
+        <!-- Teams Scoreboard -->
+        <div class="grid grid-cols-2 gap-4 mb-6">
+            <!-- Tim A -->
+            <div id="teamA-card" onclick="setActiveTeam('teamA')" class="bg-gradient-to-r from-blue-900/80 to-slate-900 border-2 border-blue-500/50 p-4 rounded-2xl relative overflow-hidden transition-all duration-300 cursor-pointer">
+                <div id="badge-active-teamA" class="hidden absolute top-0 right-0 bg-blue-500 text-slate-950 font-black text-[10px] px-3 py-0.5 rounded-bl-lg tracking-wider uppercase">
+                    <i class="fa-solid fa-play mr-1"></i> GILIRAN MAIN
+                </div>
+                <div class="flex justify-between items-center mb-2">
+                    <div class="flex items-center gap-2">
+                        <span id="teamA-name-text" class="text-blue-400 font-black text-lg">TIM A</span>
+                        <button onclick="event.stopPropagation(); renameTeam('teamA')" class="text-xs bg-blue-950/60 hover:bg-blue-800 text-blue-300 px-2 py-0.5 rounded border border-blue-700/50 transition" title="Ganti Nama Tim">
+                            <i class="fa-solid fa-pen"></i>
+                        </button>
+                    </div>
+                    <div class="flex gap-1" id="strikes-teamA">
+                        <span class="text-slate-600 text-xl font-black"><i class="fa-solid fa-xmark"></i></span>
+                        <span class="text-slate-600 text-xl font-black"><i class="fa-solid fa-xmark"></i></span>
+                        <span class="text-slate-600 text-xl font-black"><i class="fa-solid fa-xmark"></i></span>
+                    </div>
+                </div>
+                <div class="text-4xl font-black font-game text-blue-300 text-right tracking-wider" id="score-teamA">0</div>
+                <div class="mt-2 flex gap-2">
+                    <button onclick="event.stopPropagation(); addScore('teamA')" class="flex-1 bg-blue-600 hover:bg-blue-500 text-xs py-2 rounded-lg font-bold shadow">
+                        + Tambah Poin
+                    </button>
+                    <button onclick="event.stopPropagation(); addStrike('teamA')" class="bg-rose-600 hover:bg-rose-500 text-xs px-3 py-2 rounded-lg font-bold">
+                        + Strike (❌)
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tim B -->
+            <div id="teamB-card" onclick="setActiveTeam('teamB')" class="bg-gradient-to-r from-slate-900 to-red-900/80 border-2 border-red-500/50 p-4 rounded-2xl relative overflow-hidden transition-all duration-300 cursor-pointer">
+                <div id="badge-active-teamB" class="hidden absolute top-0 right-0 bg-red-500 text-white font-black text-[10px] px-3 py-0.5 rounded-bl-lg tracking-wider uppercase">
+                    <i class="fa-solid fa-play mr-1"></i> GILIRAN MAIN
+                </div>
+                <div class="flex justify-between items-center mb-2">
+                    <div class="flex items-center gap-2">
+                        <span id="teamB-name-text" class="text-red-400 font-black text-lg">TIM B</span>
+                        <button onclick="event.stopPropagation(); renameTeam('teamB')" class="text-xs bg-red-950/60 hover:bg-red-800 text-red-300 px-2 py-0.5 rounded border border-red-700/50 transition" title="Ganti Nama Tim">
+                            <i class="fa-solid fa-pen"></i>
+                        </button>
+                    </div>
+                    <div class="flex gap-1" id="strikes-teamB">
+                        <span class="text-slate-600 text-xl font-black"><i class="fa-solid fa-xmark"></i></span>
+                        <span class="text-slate-600 text-xl font-black"><i class="fa-solid fa-xmark"></i></span>
+                        <span class="text-slate-600 text-xl font-black"><i class="fa-solid fa-xmark"></i></span>
+                    </div>
+                </div>
+                <div class="text-4xl font-black font-game text-red-300 text-right tracking-wider" id="score-teamB">0</div>
+                <div class="mt-2 flex gap-2">
+                    <button onclick="event.stopPropagation(); addScore('teamB')" class="flex-1 bg-red-600 hover:bg-red-500 text-xs py-2 rounded-lg font-bold shadow">
+                        + Tambah Poin
+                    </button>
+                    <button onclick="event.stopPropagation(); addStrike('teamB')" class="bg-rose-600 hover:bg-rose-500 text-xs px-3 py-2 rounded-lg font-bold">
+                        + Strike (❌)
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Arena Display -->
+        <div class="bg-slate-900/90 border border-slate-700/80 rounded-3xl p-6 shadow-2xl relative mb-6">
+            
+            <!-- Round Score Header -->
+            <div class="flex justify-between items-center bg-slate-800/80 border border-slate-700 p-3 rounded-xl mb-4">
+                <div class="text-slate-400 text-xs font-bold uppercase">Total Poin Ronde Ini:</div>
+                <div id="current-round-score" class="text-3xl font-black font-game text-amber-400">0</div>
+                <button onclick="clearStrikes()" class="text-xs bg-slate-700 hover:bg-slate-600 px-3 py-1.5 rounded-lg font-bold text-slate-300">
+                    Reset Strike Ronde
+                </button>
+            </div>
+
+            <!-- Question Box -->
+            <div class="bg-gradient-to-r from-amber-600/20 via-slate-800 to-amber-600/20 border border-amber-500/40 rounded-2xl p-5 mb-6 text-center shadow-inner">
+                <span id="question-number-tag" class="inline-block px-3 py-1 bg-amber-500/20 border border-amber-500/40 text-amber-300 text-xs font-bold rounded-full mb-2">
+                    SOAL POIN - SURVEY JAWABAN
+                </span>
+                <h2 id="question-text" class="text-xl sm:text-2xl font-extrabold text-white leading-relaxed">
+                    Memuat Pertanyaan...
+                </h2>
+            </div>
+
+            <!-- Operator Interactive Answer Input Bar -->
+            <div id="operator-input-section" class="bg-slate-800/90 border border-amber-500/50 p-4 rounded-2xl mb-6 shadow-xl">
+                <div class="flex flex-col sm:flex-row gap-3 items-center">
+                    <div class="relative flex-1 w-full">
+                        <i class="fa-solid fa-keyboard absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                        <input type="text" id="answer-input" onkeydown="handleInputKeydown(event)" placeholder="Ketik jawaban tim di sini (tekan Enter untuk Cek)..." class="w-full bg-slate-950 border border-slate-700 text-amber-300 font-bold pl-11 pr-4 py-3 rounded-xl focus:outline-none focus:border-amber-400 text-sm sm:text-base placeholder-slate-500">
+                    </div>
+                    <div class="flex gap-2 w-full sm:w-auto">
+                        <button onclick="checkAnswerInput()" class="flex-1 sm:flex-none px-5 py-3 bg-emerald-600 hover:bg-emerald-500 font-bold rounded-xl text-white text-sm transition flex items-center justify-center gap-2 shadow-lg">
+                            <i class="fa-solid fa-check"></i> Cek Jawaban
+                        </button>
+                        <button onclick="triggerManualWrong()" class="px-5 py-3 bg-rose-600 hover:bg-rose-500 font-bold rounded-xl text-white text-sm transition flex items-center justify-center gap-2 shadow-lg">
+                            <i class="fa-solid fa-xmark"></i> Salah (❌)
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Answers Board -->
+            <div id="survey-board" class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-6"></div>
+
+            <!-- Rebutan Box -->
+            <div id="rebutan-board" class="hidden flex-col items-center justify-center p-8 bg-slate-800/50 border border-slate-700 rounded-2xl text-center mb-6">
+                <div class="w-20 h-20 bg-rose-500/20 border-2 border-rose-500 rounded-full flex items-center justify-center text-rose-400 text-3xl font-black mb-4 animate-pulse">
+                    <i class="fa-solid fa-bolt"></i>
+                </div>
+                <h3 class="text-xl font-bold text-slate-200 mb-2">SOAL REBUTAN (JAWABAN PENDEK)</h3>
+                <p class="text-slate-400 text-sm max-w-lg mb-4">Tim yang menekan bel pertama dan menjawab dengan benar (jawaban pendek) mendapatkan 50 Poin!</p>
+
+                <!-- Timer 1 Menit -->
+                <div class="bg-slate-900/90 border border-rose-500/40 p-4 rounded-2xl mb-6 flex flex-col items-center justify-center w-full max-w-xs shadow-inner">
+                    <span class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1"><i class="fa-solid fa-stopwatch mr-1"></i> Waktu Jawab</span>
+                    <div id="rebutan-timer-display" class="text-5xl font-black font-game text-rose-400 tracking-wider mb-3">01:00</div>
+                    <div class="flex gap-2 w-full">
+                        <button id="timer-start-btn" onclick="startRebutanTimer()" class="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2 px-3 rounded-xl text-xs transition flex items-center justify-center gap-1 shadow">
+                            <i class="fa-solid fa-play"></i> Mulai
+                        </button>
+                        <button id="timer-pause-btn" onclick="pauseRebutanTimer()" class="flex-1 bg-amber-600 hover:bg-amber-500 text-white font-bold py-2 px-3 rounded-xl text-xs transition flex items-center justify-center gap-1 shadow">
+                            <i class="fa-solid fa-pause"></i> Jeda
+                        </button>
+                        <button onclick="resetRebutanTimer()" class="bg-slate-700 hover:bg-slate-600 text-slate-200 font-bold py-2 px-3 rounded-xl text-xs transition flex items-center justify-center gap-1 shadow">
+                            <i class="fa-solid fa-rotate-left"></i> Reset
+                        </button>
+                    </div>
+                </div>
+
+                <div id="rebutan-answer-box" class="hidden bg-emerald-950/80 border border-emerald-500/50 p-4 rounded-xl text-emerald-300 text-lg font-bold w-full max-w-md transition-all">
+                    Jawaban Singkat: <span id="rebutan-answer-text" class="text-white"></span>
+                </div>
+                <button id="show-rebutan-btn" onclick="revealRebutanAnswer()" class="mt-4 px-6 py-3 bg-emerald-600 hover:bg-emerald-500 font-bold rounded-xl text-white shadow-lg transition">
+                    Buka Jawaban Rebutan
+                </button>
+            </div>
+
+            <!-- Controls -->
+            <div class="flex flex-wrap justify-between items-center gap-3 pt-4 border-t border-slate-800">
+                <button onclick="prevQuestion()" class="px-5 py-2.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 font-bold rounded-xl text-sm transition">
+                    <i class="fa-solid fa-chevron-left mr-1"></i> Soal Sebelumnya
+                </button>
+
+                <div class="flex flex-wrap gap-2">
+                    <button onclick="switchActiveTeam()" class="px-4 py-2.5 bg-amber-600 hover:bg-amber-500 text-white font-bold rounded-xl text-sm transition flex items-center gap-1 shadow">
+                        <i class="fa-solid fa-right-left"></i> Ganti Giliran Tim
+                    </button>
+                    <button onclick="revealAllAnswers()" class="px-4 py-2.5 bg-indigo-600/80 hover:bg-indigo-600 text-white font-bold rounded-xl text-sm transition">
+                        <i class="fa-solid fa-eye mr-1"></i> Buka Semua
+                    </button>
+                </div>
+
+                <button onclick="nextQuestion()" class="px-5 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black rounded-xl text-sm transition">
+                    Soal Berikutnya <i class="fa-solid fa-chevron-right ml-1"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Navigation Grid -->
+        <div class="bg-slate-900/80 border border-slate-700/60 p-4 rounded-2xl">
+            <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Navigasi Soal (5 Ronde x 10 Soal - Sesuai Materi Bab 1)</h3>
+            <div id="question-nav-grid" class="flex flex-wrap gap-2"></div>
+        </div>
+    </div>
+
+    <script>
+        let currentRoundIdx = 0;
+        let currentQuestionIdx = 0;
+        let scoreTeamA = 0;
+        let scoreTeamB = 0;
+        let strikesTeamA = 0;
+        let strikesTeamB = 0;
+        let currentRoundScore = 0;
+        let revealedAnswers = [];
+        let activeTeam = 'teamA';
+
+        let timerInterval = null;
+        let timerTime = 60;
+
+        let roundIndicatorEl, questionTypeBadgeEl, questionNumberTagEl, questionTextEl;
+        let surveyBoardEl, rebutanBoardEl, rebutanTimerDisplayEl, rebutanAnswerBoxEl, rebutanAnswerTextEl, showRebutanBtnEl;
+        let operatorInputSectionEl, scoreTeamAEl, scoreTeamBEl, roundScoreEl, navGridEl;
+
+        let audioCtx = null;
+        function getAudioContext() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            return audioCtx;
+        }
+
+        function playCorrectSound() {
+            try {
+                const ctx = getAudioContext();
+                const now = ctx.currentTime;
+                const notes = [523.25, 659.25, 783.99, 1046.50];
+                notes.forEach((freq, idx) => {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(freq, now + idx * 0.08);
+                    gain.gain.setValueAtTime(0.2, now + idx * 0.08);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.08 + 0.3);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start(now + idx * 0.08);
+                    osc.stop(now + idx * 0.08 + 0.3);
+                });
+            } catch (e) {}
+        }
+
+        function playWrongSound() {
+            try {
+                const ctx = getAudioContext();
+                const now = ctx.currentTime;
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(130, now);
+                osc.frequency.linearRampToValueAtTime(90, now + 0.6);
+                gain.gain.setValueAtTime(0.4, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.6);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start(now);
+                osc.stop(now + 0.6);
+            } catch (e) {}
+        }
+
+        // Dataset strictly derived from Bab 1: Konsep Dasar Sejarah
+        const gameData = [
+            // ================= RONDE 1: PENGERTIAN SEJARAH & SUMBER (10 Jawaban) =================
+            {
+                round: 1,
+                questions: [
+                    {
+                        type: 'survey',
+                        text: 'Sebutkan arti kata "sejarah" berdasarkan asal kata etimologi dan Kamus Besar Bahasa Indonesia (KBBI)!',
+                        answers: [
+                            { text: 'Syajaratun (Pohon - Bahasa Arab)', points: 100, keywords: ['syajaratun', 'pohon', 'arab'] },
+                            { text: 'Asal-usul / Keturunan / Silsilah', points: 90, keywords: ['silsilah', 'keturunan', 'kbbi'] },
+                            { text: 'Kejadian atau peristiwa yang benar-benar terjadi pada masa lampau', points: 80, keywords: ['kejadian', 'peristiwa', 'lampau'] },
+                            { text: 'Riwayat / Tambo', points: 70, keywords: ['riwayat', 'tambo'] },
+                            { text: 'Catatan tentang masyarakat umat manusia atau peradaban (Ibnu Khaldun)', points: 60, keywords: ['ibnu khaldun', 'manusia', 'peradaban'] },
+                            { text: 'Penyelidikan tentang masa lampau umat manusia (R.G. Collingwood)', points: 50, keywords: ['collingwood', 'penyelidikan'] },
+                            { text: 'Keseluruhan perubahan dan kejadian nyata (R. Mohammad Ali)', points: 40, keywords: ['mohammad ali', 'perubahan'] },
+                            { text: 'Ilmu tentang masa lampau', points: 30, keywords: ['ilmu'] },
+                            { text: 'Kisah masa lalu', points: 20, keywords: ['kisah'] },
+                            { text: 'Uraian kronologis kejadian', points: 10, keywords: ['uraian'] }
+                        ]
+                    },
+                    {
+                        type: 'survey',
+                        text: 'Sebutkan konsep-konsep penting yang dipelajari dalam ruang lingkup ilmu sejarah!',
+                        answers: [
+                            { text: 'Konsep Manusia sebagai pelaku/subjek', points: 100, keywords: ['manusia'] },
+                            { text: 'Konsep Ruang (Dimensi Tempat)', points: 90, keywords: ['ruang', 'tempat'] },
+                            { text: 'Konsep Waktu (Dimensi Masa)', points: 80, keywords: ['waktu', 'masa'] },
+                            { text: 'Konsep Diakronik (Memanjang dalam waktu)', points: 70, keywords: ['diakronik', 'memanjang'] },
+                            { text: 'Konsep Sinkronik (Meluas dalam ruang)', points: 60, keywords: ['sinkronik', 'meluas'] },
+                            { text: 'Konsep Kronologi (Urutan waktu)', points: 50, keywords: ['kronologi', 'urutan'] },
+                            { text: 'Konsep Perubahan (Transformasi)', points: 40, keywords: ['perubahan', 'transformasi'] },
+                            { text: 'Konsep Keberlanjutan (Kontinuitas)', points: 30, keywords: ['keberlanjutan', 'kontinuitas'] },
+                            { text: 'Konsep Kausalitas (Sebab-Akibat)', points: 20, keywords: ['kausalitas', 'sebab'] },
+                            { text: 'Konsep Periodisasi (Pembabakan)', points: 10, keywords: ['periodisasi', 'pembabakan'] }
+                        ]
+                    },
+                    {
+                        type: 'survey',
+                        text: 'Sebutkan tokoh sejarawan dunia maupun nasional yang definisinya sering dijadikan rujukan ilmu sejarah!',
+                        answers: [
+                            { text: 'Ibnu Khaldun', points: 100, keywords: ['ibnu khaldun'] },
+                            { text: 'R.G. Collingwood', points: 90, keywords: ['collingwood'] },
+                            { text: 'R. Mohammad Ali', points: 80, keywords: ['mohammad ali', 'ali'] },
+                            { text: 'Herodotus (Bapak Sejarah)', points: 70, keywords: ['herodotus'] },
+                            { text: 'Sartono Kartodirdjo', points: 60, keywords: ['sartono', 'kartodirdjo'] },
+                            { text: 'Aristoteles', points: 50, keywords: ['aristoteles'] },
+                            { text: 'Koentjaraningrat', points: 40, keywords: ['koentjaraningrat'] },
+                            { text: 'Taufik Abdullah', points: 30, keywords: ['taufik abdullah'] },
+                            { text: 'Soekarno', points: 20, keywords: ['soekarno'] },
+                            { text: 'Thucydides', points: 10, keywords: ['thucydides'] }
+                        ]
+                    },
+                    {
+                        type: 'survey',
+                        text: 'Sebutkan 3 konsep utama yang tidak dapat dipisahkan dalam suatu peristiwa sejarah!',
+                        answers: [
+                            { text: 'Manusia', points: 100, keywords: ['manusia'] },
+                            { text: 'Ruang (Tempat)', points: 90, keywords: ['ruang', 'tempat'] },
+                            { text: 'Waktu (Masa)', points: 80, keywords: ['waktu', 'masa'] },
+                            { text: 'Perubahan', points: 70, keywords: ['perubahan'] },
+                            { text: 'Masa Lampau', points: 60, keywords: ['lampau'] },
+                            { text: 'Peristiwa', points: 50, keywords: ['peristiwa'] },
+                            { text: 'Kausalitas', points: 40, keywords: ['kausalitas'] },
+                            { text: 'Lingkungan', points: 30, keywords: ['lingkungan'] },
+                            { text: 'Kronologi', points: 20, keywords: ['kronologi'] },
+                            { text: 'Dinamika', points: 10, keywords: ['dinamika'] }
+                        ]
+                    },
+                    {
+                        type: 'survey',
+                        text: 'Sebutkan konsep-konsep dasar penting yang dipelajari dalam ilmu sejarah!',
+                        answers: [
+                            { text: 'Konsep Manusia', points: 100, keywords: ['manusia'] },
+                            { text: 'Konsep Ruang', points: 90, keywords: ['ruang'] },
+                            { text: 'Konsep Waktu', points: 80, keywords: ['waktu'] },
+                            { text: 'Konsep Diakronik', points: 70, keywords: ['diakronik'] },
+                            { text: 'Konsep Sinkronik', points: 60, keywords: ['sinkronik'] },
+                            { text: 'Konsep Perubahan', points: 50, keywords: ['perubahan'] },
+                            { text: 'Konsep Keberlanjutan', points: 40, keywords: ['keberlanjutan'] },
+                            { text: 'Konsep Kronologi', points: 30, keywords: ['kronologi'] },
+                            { text: 'Konsep Kausalitas', points: 20, keywords: ['kausalitas'] },
+                            { text: 'Konsep Periodisasi', points: 10, keywords: ['periodisasi'] }
+                        ]
+                    },
+                    {
+                        type: 'rebutan',
+                        text: 'Dari bahasa apakah asal kata "syajaratun" yang menjadi akar kata sejarah?',
+                        answer: 'Bahasa Arab',
+                        keywords: ['arab']
+                    },
+                    {
+                        type: 'rebutan',
+                        text: 'Apa arti harfiah dari kata "syajaratun" dalam bahasa Indonesia?',
+                        answer: 'Pohon',
+                        keywords: ['pohon']
+                    },
+                    {
+                        type: 'rebutan',
+                        text: 'Siapakah sejarawan Muslim terkemuka yang mendefinisikan sejarah sebagai catatan tentang masyarakat umat manusia atau peradaban?',
+                        answer: 'Ibnu Khaldun',
+                        keywords: ['ibnu khaldun']
+                    },
+                    {
+                        type: 'rebutan',
+                        text: 'Apa nama kamus resmi bahasa Indonesia yang mendefinisikan sejarah sebagai asal-usul, silsilah, atau kejadian masa lampau?',
+                        answer: 'KBBI',
+                        keywords: ['kbbi', 'kamus besar bahasa indonesia']
+                    },
+                    {
+                        type: 'rebutan',
+                        text: 'Sebutkan 3 konsep utama yang mutlak ada dan saling terikat dalam sebuah peristiwa sejarah!',
+                        answer: 'Manusia, Ruang, dan Waktu',
+                        keywords: ['manusia', 'ruang', 'waktu']
+                    }
+                ]
+            },
+            // ================= RONDE 2: PERAN MANUSIA & MANFAAT SEJARAH (9 Jawaban) =================
+            {
+                round: 2,
+                questions: [
+                    {
+                        type: 'survey',
+                        text: 'Sebutkan bentuk peran penting manusia dalam peristiwa sejarah!',
+                        answers: [
+                            { text: 'Pencipta Sejarah', points: 100, keywords: ['pencipta'] },
+                            { text: 'Pelaku Sejarah', points: 88, keywords: ['pelaku'] },
+                            { text: 'Penutur Sejarah', points: 75, keywords: ['penutur'] },
+                            { text: 'Sumber Sejarah', points: 63, keywords: ['sumber'] },
+                            { text: 'Pemeran utama dalam drama kehidupan', points: 50, keywords: ['pemeran utama', 'drama'] },
+                            { text: 'Penggerak perubahan sosial', points: 38, keywords: ['penggerak'] },
+                            { text: 'Pewaris nilai tradisi', points: 25, keywords: ['pewaris'] },
+                            { text: 'Saksi sejarah', points: 13, keywords: ['saksi'] },
+                            { text: 'Peneliti & Penulis sejarah', points: 5, keywords: ['peneliti', 'penulis'] }
+                        ]
+                    },
+                    {
+                        type: 'survey',
+                        text: 'Sebutkan contoh tokoh-tokoh penting dalam peristiwa Proklamasi Kemerdekaan Indonesia!',
+                        answers: [
+                            { text: 'Ir. Soekarno (Proklamator)', points: 100, keywords: ['soekarno', 'sukarno', 'proklamator'] },
+                            { text: 'Drs. Mohammad Hatta (Wakil Presiden)', points: 88, keywords: ['hatta'] },
+                            { text: 'Alexius Impurung Mendur (Dokumentasi Foto)', points: 75, keywords: ['alexius', 'mendur', 'fotografer'] },
+                            { text: 'Sayuti Melik (Pengetik Naskah)', points: 63, keywords: ['sayuti melik'] },
+                            { text: 'Ahmad Soebardjo', points: 50, keywords: ['soebardjo', 'subardjo'] },
+                            { text: 'Fatmawati (Penjahit Bendera Pusaka)', points: 38, keywords: ['fatmawati'] },
+                            { text: 'Latief Hendraningrat (Pengibar Bendera)', points: 40, keywords: ['latief'] },
+                            { text: 'Suwiryo', points: 13, keywords: ['suwiryo'] },
+                            { text: 'BM Diah / Sutan Sjahrir', points: 5, keywords: ['bm diah', 'sjahrir'] }
+                        ]
+                    },
+                    {
+                        type: 'survey',
+                        text: 'Sebutkan berbagai manfaat utama mempelajari ilmu sejarah bagi kehidupan!',
+                        answers: [
+                            { text: 'Sebagai panduan moral dan politik bangsa', points: 100, keywords: ['panduan moral', 'politik'] },
+                            { text: 'Memberi pelajaran bermakna dari pengalaman masa lalu', points: 88, keywords: ['pelajaran', 'bermakna'] },
+                            { text: 'Sarana mengenal lebih dekat bangsa sendiri dan bangsa lain', points: 75, keywords: ['mengenal', 'bangsa'] },
+                            { text: 'Memperkokoh identitas dan kepribadian bangsa', points: 63, keywords: ['identitas', 'memperkokoh'] },
+                            { text: 'Melatih cara berpikir menyeluruh (holistik) & multiperspektif', points: 50, keywords: ['holistik', 'multiperspektif'] },
+                            { text: 'Melatih berpikir diakronik dan sinkronik', points: 38, keywords: ['diakronik', 'sinkronik'] },
+                            { text: 'Memahami keterkaitan antarperistiwa', points: 25, keywords: ['keterkaitan'] },
+                            { text: 'Sumber inspirasi dan motivasi', points: 13, keywords: ['inspirasi'] },
+                            { text: 'Menumbuhkan nasionalisme / Rekreasi edukatif', points: 5, keywords: ['nasionalisme', 'rekreasi'] }
+                        ]
+                    },
+                    {
+                        type: 'survey',
+                        text: 'Sebutkan bentuk keterampilan berpikir kritis yang dilatih melalui pembelajaran sejarah!',
+                        answers: [
+                            { text: 'Melatih berpikir menyeluruh (holistik)', points: 100, keywords: ['holistik', 'menyeluruh'] },
+                            { text: 'Melatih berpikir multiperspektif', points: 88, keywords: ['multiperspektif'] },
+                            { text: 'Memahami bahwa peristiwa tidak berdiri sendiri', points: 75, keywords: ['tidak berdiri sendiri'] },
+                            { text: 'Melihat keterikatan dengan peristiwa sebelumnya', points: 63, keywords: ['terikat'] },
+                            { text: 'Menganalisis hukum sebab-akibat (kausalitas)', points: 50, keywords: ['sebab akibat', 'kausalitas'] },
+                            { text: 'Membandingkan kondisi masa lalu dan masa kini', points: 38, keywords: ['membandingkan'] },
+                            { text: 'Memahami konteks ruang dan waktu secara teliti', points: 25, keywords: ['konteks ruang'] },
+                            { text: 'Ketelitian dan keobjektifan berpikir', points: 13, keywords: ['ketelitian', 'objektif'] },
+                            { text: 'Evaluasi kritis terhadap sumber data', points: 5, keywords: ['evaluasi', 'kritis'] }
+                        ]
+                    },
+                    {
+                        type: 'survey',
+                        text: 'Sebutkan nilai-nilai luhur yang dapat dipetik dari kesadaran sejarah suatu bangsa!',
+                        answers: [
+                            { text: 'Panduan moral dan etika berbangsa', points: 100, keywords: ['panduan moral'] },
+                            { text: 'Sarana mengenal jati diri bangsa', points: 88, keywords: ['mengenal jati diri', 'bangsa'] },
+                            { text: 'Memperkokoh identitas nasional', points: 75, keywords: ['memperkokoh identitas'] },
+                            { text: 'Mengambil pelajaran dari kesalahan masa lalu', points: 63, keywords: ['pelajaran'] },
+                            { text: 'Membangun kesadaran sejarah (historical consciousness)', points: 50, keywords: ['kesadaran sejarah'] },
+                            { text: 'Menumbuhkan kebanggaan nasional', points: 38, keywords: ['kebanggaan'] },
+                            { text: 'Melestarikan kearifan lokal', points: 25, keywords: ['kearifan lokal'] },
+                            { text: 'Memperkuat persatuan dan kesatuan', points: 13, keywords: ['persatuan'] },
+                            { text: 'Menanamkan jiwa patriotisme & keteladanan', points: 5, keywords: ['patriotisme', 'keteladanan'] }
+                        ]
+                    },
+                    {
+                        type: 'rebutan',
+                        text: 'Siapakah proklamator kemerdekaan RI yang sering dikategorikan sebagai tokoh besar dalam sejarah?',
+                        answer: 'Ir. Soekarno',
+                        keywords: ['soekarno', 'sukarno']
+                    },
+                    {
+                        type: 'rebutan',
+                        text: 'Siapakah fotografer pemberani yang mengabadikan detik-detik Proklamasi 1945 dan dijuluki sebagai "orang kecil" penggerak sejarah?',
+                        answer: 'Alexius Impurung Mendur',
+                        keywords: ['alexius', 'mendur']
+                    },
+                    {
+                        type: 'rebutan',
+                        text: 'Dalam pementasan sejarah, manusia menempati posisi sentral layaknya pemeran utama dalam sebuah pertunjukan apa?',
+                        answer: 'Drama',
+                        keywords: ['drama']
+                    },
+                    {
+                        type: 'rebutan',
+                        text: 'Sebutkan salah satu fungsi utama sejarah menurut materi pembelajaran sebagai panduan...',
+                        answer: 'Panduan moral dan politik bangsa',
+                        keywords: ['panduan moral']
+                    },
+                    {
+                        type: 'rebutan',
+                        text: 'Selain berpikir holistik, mempelajari sejarah juga melatih cara berpikir dari berbagai sudut pandang yang disebut?',
+                        answer: 'Multiperspektif',
+                        keywords: ['multiperspektif']
+                    }
+                ]
+            },
+            // ================= RONDE 3: CARA BERPIKIR KRONOLOGIS & DIAKRONIK (8 Jawaban) =================
+            {
+                round: 3,
+                questions: [
+                    {
+                        type: 'survey',
+                        text: 'Sebutkan fungsi dan manfaat utama dari cara berpikir secara kronologis dalam sejarah!',
+                        answers: [
+                            { text: 'Menyusun peristiwa secara runtut sesuai urutan waktu kejadian', points: 100, keywords: ['runtut', 'urutan waktu'] },
+                            { text: 'Ilmu tentang waktu yang membantu penataan peristiwa', points: 85, keywords: ['ilmu tentang waktu'] },
+                            { text: 'Menghindari terjadinya kesalahan penempatan waktu (anakronisme)', points: 70, keywords: ['anakronisme', 'menghindari'] },
+                            { text: 'Memberikan gambaran utuh perjalanan suatu peristiwa', points: 55, keywords: ['gambaran utuh'] },
+                            { text: 'Mempermudah proses rekonstruksi sejarah masa lalu', points: 40, keywords: ['rekonstruksi'] },
+                            { text: 'Menyusun urutan kejadian secara sistematis', points: 25, keywords: ['menyusun urutan'] },
+                            { text: 'Memastikan ketepatan waktu historis', points: 15, keywords: ['ketepatan waktu'] },
+                            { text: 'Membuat alur linimasa yang jelas', points: 5, keywords: ['linimasa', 'alur'] }
+                        ]
+                    },
+                    {
+                        type: 'survey',
+                        text: 'Jelaskan pengertian diakronik dan arti dari kata tersebut!',
+                        answers: [
+                            { text: 'Dia dari bahasa Yunani berarti melintas, melampaui, atau melalui', points: 100, keywords: ['dia', 'melintas', 'melampaui', 'melalui'] },
+                            { text: 'Chronoss berarti waktu', points: 85, keywords: ['chronoss', 'waktu'] },
+                            { text: 'Berpikir memanjang dalam dimensi waktu', points: 70, keywords: ['memanjang', 'waktu'] },
+                            { text: 'Berfokus pada proses perkembangan dan perubahan', points: 55, keywords: ['perkembangan', 'perubahan'] },
+                            { text: 'Memberikan alur cerita bagaimana suatu peristiwa terjadi', points: 40, keywords: ['alur cerita'] },
+                            { text: 'Kajian lintas waktu secara berkesinambungan', points: 25, keywords: ['lintas waktu'] },
+                            { text: 'Menelaah proses historis dari masa ke masa', points: 15, keywords: ['proses historis'] },
+                            { text: 'Menganalisis dinamika perjalanan masa', points: 5, keywords: ['dinamika'] }
+                        ]
+                    },
+                    {
+                        type: 'survey',
+                        text: 'Sebutkan contoh kajian peristiwa dengan menggunakan pendekatan berpikir diakronik di Indonesia!',
+                        answers: [
+                            { text: 'Perkembangan Sistem Demokrasi di Indonesia dari tahun 1945 sampai 1998', points: 100, keywords: ['demokrasi', '1945', '1998'] },
+                            { text: 'Masa Demokrasi Liberal (1950-1959)', points: 85, keywords: ['liberal', '1950'] },
+                            { text: 'Masa Demokrasi Terpimpin (1959-1965)', points: 70, keywords: ['terpimpin', '1959'] },
+                            { text: 'Masa Demokrasi Pancasila Orde Baru (1966-1998)', points: 55, keywords: ['pancasila', '1966'] },
+                            { text: 'Masa Revolusi Kemerdekaan Fisik', points: 40, keywords: ['revolusi'] },
+                            { text: 'Masa Pendudukan Militer Jepang', points: 25, keywords: ['jepang'] },
+                            { text: 'Masa Kolonialisme Pemerintahan Hindia Belanda', points: 15, keywords: ['kolonialisme'] },
+                            { text: 'Masa Pergerakan Nasional / Masa Reformasi', points: 5, keywords: ['pergerakan', 'reformasi'] }
+                        ]
+                    },
+                    {
+                        type: 'survey',
+                        text: 'Sebutkan contoh tahapan pembabakan periodisasi dalam sejarah Indonesia!',
+                        answers: [
+                            { text: 'Masa Praaksara (Sebelum mengenal tulisan)', points: 100, keywords: ['praaksara'] },
+                            { text: 'Masa pengaruh dan perkembangan Hindu-Buddha', points: 85, keywords: ['hindu', 'buddha'] },
+                            { text: 'Masa pengaruh dan perkembangan agama Islam', points: 70, keywords: ['islam'] },
+                            { text: 'Masa kekuasaan kolonialisme bangsa Barat', points: 55, keywords: ['kolonialisme'] },
+                            { text: 'Masa Pendudukan Jepang', points: 40, keywords: ['jepang'] },
+                            { text: 'Masa Revolusi Kemerdekaan', points: 25, keywords: ['revolusi'] },
+                            { text: 'Masa Orde Lama dan Orde Baru', points: 15, keywords: ['orde lama', 'orde baru'] },
+                            { text: 'Masa Reformasi', points: 5, keywords: ['reformasi'] }
+                        ]
+                    },
+                    {
+                        type: 'survey',
+                        text: 'Sebutkan syarat atau konsep dasar yang diperlukan untuk mampu berpikir secara diakronis!',
+                        answers: [
+                            { text: 'Memahami konsep periodisasi atau pembabakan waktu', points: 100, keywords: ['periodisasi', 'pembabakan'] },
+                            { text: 'Mengamati gejala dalam rentang waktu yang panjang', points: 85, keywords: ['rentang waktu', 'panjang'] },
+                            { text: 'Berada dalam batasan ruang atau tempat tertentu', points: 70, keywords: ['batasan ruang'] },
+                            { text: 'Memahami proses perkembangan masyarakat', points: 55, keywords: ['perkembangan'] },
+                            { text: 'Menganalisis proses terjadinya perubahan', points: 40, keywords: ['perubahan'] },
+                            { text: 'Melihat unsur keberlanjutan antar zaman', points: 25, keywords: ['keberlanjutan'] },
+                            { text: 'Mengikuti alur kronologis yang tepat', points: 15, keywords: ['kronologis'] },
+                            { text: 'Melakukan analisis kausalitas waktu', points: 5, keywords: ['kausalitas', 'analisis'] }
+                        ]
+                    },
+                    {
+                        type: 'rebutan',
+                        text: 'Apakah nama ilmu bantu sejarah yang mempelajari tentang waktu dan urutan kejadian secara runtut?',
+                        answer: 'Kronologi',
+                        keywords: ['kronologi']
+                    },
+                    {
+                        type: 'rebutan',
+                        text: 'Apa istilah dalam sejarah untuk menyebut kesalahan penempatan waktu atau era terhadap suatu peristiwa?',
+                        answer: 'Anakronisme',
+                        keywords: ['anakronisme']
+                    },
+                    {
+                        type: 'rebutan',
+                        text: 'Apa arti kata "chronoss" dalam bahasa Yunani yang mendasari istilah kronologi dan diakronik?',
+                        answer: 'Waktu',
+                        keywords: ['waktu']
+                    },
+                    {
+                        type: 'rebutan',
+                        text: 'Apa arti kata "dia" dalam istilah pendekatan diakronik?',
+                        answer: 'Melintas / Melampaui / Melalui',
+                        keywords: ['melintas', 'melampaui', 'melalui']
+                    },
+                    {
+                        type: 'rebutan',
+                        text: 'Apa istilah resmi untuk pengklasifikasian peristiwa sejarah ke dalam babak-babak atau masa tertentu?',
+                        answer: 'Periodisasi',
+                        keywords: ['periodisasi']
+                    }
+                ]
+            },
+            // ================= RONDE 4: CARA BERPIKIR SINKRONIK & PERUBAHAN (7 Jawaban) =================
+            {
+                round: 4,
+                questions: [
+                    {
+                        type: 'survey',
+                        text: 'Jelaskan pengertian sinkronik dan arti dari kata tersebut!',
+                        answers: [
+                            { text: 'Syn dari bahasa Yunani berarti dengan atau bersamaan', points: 100, keywords: ['syn', 'dengan', 'bersamaan'] },
+                            { text: 'Chronoss berarti waktu', points: 83, keywords: ['chronoss', 'waktu'] },
+                            { text: 'Membedah suatu peristiwa pada satu kurun waktu tertentu saja', points: 66, keywords: ['satu kurun waktu', 'kurun waktu'] },
+                            { text: 'Menelaah secara mendalam dari berbagai sudut pandang ilmu', points: 50, keywords: ['mendalam', 'sudut pandang'] },
+                            { text: 'Mencakup aspek ekonomi, sosial, politik, dan budaya secara bersamaan', points: 33, keywords: ['ekonomi', 'sosial', 'politik', 'budaya'] },
+                            { text: 'Memberikan detail isi cerita mengenai alasan atau situasi', points: 16, keywords: ['detail', 'alasan'] },
+                            { text: 'Kajian meluas dalam ruang dengan pendekatan horizontal', points: 5, keywords: ['meluas', 'horizontal'] }
+                        ]
+                    },
+                    {
+                        type: 'survey',
+                        text: 'Sebutkan ciri-ciri utama dari cara berpikir secara sinkronik dalam menelaah sejarah!',
+                        answers: [
+                            { text: 'Mengkaji peristiwa sejarah pada masa atau waktu tertentu', points: 100, keywords: ['masa tertentu', 'waktu tertentu'] },
+                            { text: 'Menitikberatkan kajian pada pola-pola, gejala, dan karakter', points: 83, keywords: ['pola', 'gejala', 'karakter'] },
+                            { text: 'Bersifat melebar atau horizontal dalam ruang', points: 66, keywords: ['horizontal', 'melebar'] },
+                            { text: 'Tidak mengutamakan konsep perbandingan waktu jangka panjang', points: 50, keywords: ['tidak ada perbandingan', 'jangka panjang'] },
+                            { text: 'Cakupan kajian lebih terfokus dan mendalam', points: 33, keywords: ['terfokus', 'mendalam'] },
+                            { text: 'Analisis bersifat sistematis terhadap suatu struktur sosial', points: 16, keywords: ['sistematis', 'struktur'] },
+                            { text: 'Mengkaji kondisi sezaman tanpa dimensi waktu yang panjang', points: 5, keywords: ['sezaman', 'tanpa dimensi'] }
+                        ]
+                    },
+                    {
+                        type: 'survey',
+                        text: 'Sebutkan contoh kajian peristiwa sejarah yang menggunakan pendekatan berpikir sinkronik!',
+                        answers: [
+                            { text: 'Membedah Suasana Kota Jakarta pada tanggal 17 Agustus 1945', points: 100, keywords: ['jakarta', '17 agustus 1945', 'suasana'] },
+                            { text: 'Kondisi sosial dan ekonomi Indonesia pada masa krisis tahun 1998', points: 83, keywords: ['ekonomi indonesia 1998', 'krisis'] },
+                            { text: 'Situasi masyarakat pada masa pendudukan militer Jepang', points: 66, keywords: ['sosial jepang', 'pendudukan'] },
+                            { text: 'Struktur sistem pemerintahan pada masa Kerajaan Majapahit', points: 50, keywords: ['pemerintahan majapahit'] },
+                            { text: 'Kehidupan sosial masyarakat desa di masa kolonial', points: 33, keywords: ['masyarakat desa', 'kolonial'] },
+                            { text: 'Sistem pertahanan militer pada masa Demokrasi Terpimpin', points: 16, keywords: ['militer terpimpin'] },
+                            { text: 'Kondisi perpolitikan nasional tahun 1965', points: 5, keywords: ['politik 1965'] }
+                        ]
+                    },
+                    {
+                        type: 'survey',
+                        text: 'Sebutkan pengertian perubahan dan bentuk-bentuk perubahan dalam sejarah!',
+                        answers: [
+                            { text: 'Pengertian Perubahan: Transformasi total suatu sistem atau tatanan kehidupan masyarakat', points: 100, keywords: ['pengertian perubahan', 'transformasi', 'tatanan'] },
+                            { text: 'Perubahan cepat yang berlangsung dalam waktu singkat (Revolusi)', points: 83, keywords: ['cepat', 'revolusi'] },
+                            { text: 'Perubahan lambat yang berlangsung secara bertahap (Evolusi)', points: 66, keywords: ['lambat', 'evolusi'] },
+                            { text: 'Perubahan struktural yang mengubah tatanan dasar sosial politik', points: 50, keywords: ['struktural', 'tatanan dasar'] },
+                            { text: 'Perubahan yang direncanakan maupun tidak direncanakan', points: 33, keywords: ['direncanakan', 'tidak direncanakan'] },
+                            { text: 'Dinamika peradaban manusia dari masa ke masa', points: 16, keywords: ['dinamika peradaban'] },
+                            { text: 'Pergeseran nilai dan pola hidup masyarakat', points: 5, keywords: ['pergeseran nilai', 'pola hidup'] }
+                        ]
+                    },
+                    {
+                        type: 'survey',
+                        text: 'Sebutkan konsep dan ciri-ciri dari keberlanjutan (kontinuitas) dalam sejarah!',
+                        answers: [
+                            { text: 'Merupakan kebalikan dari konsep perubahan', points: 100, keywords: ['kebalikan', 'perubahan'] },
+                            { text: 'Berjalannya suatu peristiwa secara berkesinambungan', points: 83, keywords: ['berkesinambungan'] },
+                            { text: 'Bersifat konsisten tanpa terputus dalam kurun waktu lama', points: 66, keywords: ['konsisten', 'tanpa terputus'] },
+                            { text: 'Berlangsung secara garis lurus sampai terjadinya suatu perubahan', points: 50, keywords: ['garis lurus'] },
+                            { text: 'Berlangsung secara pola berulang atau siklus tertentu', points: 33, keywords: ['pola berulang', 'siklus'] },
+                            { text: 'Adanya estafet nilai dan tradisi antar generasi', points: 16, keywords: ['estafet', 'generasi'] },
+                            { text: 'Kelangsungan sistem sosial yang diwariskan leluhur', points: 5, keywords: ['kelangsungan sistem', 'warisan'] }
+                        ]
+                    },
+                    {
+                        type: 'rebutan',
+                        text: 'Apa arti kata "syn" dalam bahasa Yunani yang membentuk istilah sinkronik?',
+                        answer: 'Dengan / Bersamaan',
+                        keywords: ['dengan', 'bersamaan']
+                    },
+                    {
+                        type: 'rebutan',
+                        text: 'Cara berpikir sinkronik dalam menelaah suatu peristiwa sejarah bersifat meluas secara apa?',
+                        answer: 'Horizontal',
+                        keywords: ['horizontal']
+                    },
+                    {
+                        type: 'rebutan',
+                        text: 'Apa istilah khusus dalam sejarah untuk menyebut bentuk perubahan sosial yang terjadi secara cepat?',
+                        answer: 'Revolusi',
+                        keywords: ['revolusi']
+                    },
+                    {
+                        type: 'rebutan',
+                        text: 'Apa istilah dalam sejarah untuk menyebut bentuk perubahan sosial yang terjadi secara lambat dan bertahap?',
+                        answer: 'Evolusi',
+                        keywords: ['evolusi']
+                    },
+                    {
+                        type: 'rebutan',
+                        text: 'Sebutkan bentuk perubahan yang berlangsung secara bertahap dan memakan waktu lama dalam masyarakat!',
+                        answer: 'Evolusi',
+                        keywords: ['evolusi']
+                    }
+                ]
+            },
+            // ================= RONDE 5: PENELITIAN SEJARAH (6 Jawaban) =================
+            {
+                round: 5,
+                questions: [
+                    {
+                        type: 'survey',
+                        text: 'Sebutkan 5 tahapan utama dalam metodologi penelitian sejarah secara berurutan!',
+                        answers: [
+                            { text: '1. Pemilihan Topik (Menentukan judul dan fokus penelitian)', points: 100, keywords: ['pemilihan topik', 'topik'] },
+                            { text: '2. Heuristik (Tahap pengumpulan sumber atau data sejarah)', points: 80, keywords: ['heuristik', 'pengumpulan sumber'] },
+                            { text: '3. Verifikasi (Tahap kritik internal dan eksternal sumber)', points: 60, keywords: ['verifikasi', 'kritik sumber'] },
+                            { text: '4. Interpretasi (Tahap penafsiran fakta dan analisis sebab-akibat)', points: 40, keywords: ['interpretasi', 'penafsiran'] },
+                            { text: '5. Historiografi (Tahap penulisan kisah sejarah secara ilmiah)', points: 20, keywords: ['historiografi', 'penulisan'] },
+                            { text: 'Pencarian arsip / Uji keaslian / Publikasi laporan', points: 5, keywords: ['pencarian arsip', 'uji keaslian', 'publikasi'] }
+                        ]
+                    },
+                    {
+                        type: 'survey',
+                        text: 'Sebutkan syarat-syarat penting dalam melakukan pemilihan topik penelitian sejarah!',
+                        answers: [
+                            { text: 'Unik (Memiliki kekhususan tersendiri)', points: 100, keywords: ['unik'] },
+                            { text: 'Bernilai (Memiliki arti penting bagi ilmu pengetahuan)', points: 80, keywords: ['bernilai'] },
+                            { text: 'Kesatuan (Memiliki batas ruang dan waktu yang jelas)', points: 60, keywords: ['kesatuan'] },
+                            { text: 'Orisinal / Asli (Bukan hasil plagiasi)', points: 40, keywords: ['orisinal', 'asli'] },
+                            { text: 'Praktis (Dapat diteliti dan dijangkau sumbernya)', points: 20, keywords: ['praktis'] },
+                            { text: 'Ketersediaan sumber data / Bersifat objektif / Relevan', points: 5, keywords: ['ketersediaan sumber', 'objektif', 'relevan'] }
+                        ]
+                    },
+                    {
+                        type: 'survey',
+                        text: 'Jelaskan kegiatan utama yang dilakukan dalam tahapan heuristik penelitian sejarah!',
+                        answers: [
+                            { text: 'Mengumpulkan sumber, dokumen, atau data sejarah sebanyak-banyaknya', points: 100, keywords: ['mengumpulkan sumber', 'data sebanyak-banyaknya'] },
+                            { text: 'Mencari jejak-jejak masa lalu yang tertinggal', points: 80, keywords: ['mencari jejak'] },
+                            { text: 'Pencarian arsip, naskah kuno, dan artefak', points: 60, keywords: ['arsip', 'artefak'] },
+                            { text: 'Melakukan wawancara dengan narasumber atau saksi sejarah', points: 40, keywords: ['wawancara', 'narasumber'] },
+                            { text: 'Melaksanakan studi pustaka di perpustakaan atau museum', points: 20, keywords: ['studi pustaka'] },
+                            { text: 'Inventarisasi bukti-bukti sejarah', points: 5, keywords: ['inventarisasi', 'bukti'] }
+                        ]
+                    },
+                    {
+                        type: 'survey',
+                        text: 'Jelaskan kegiatan utama dalam tahapan verifikasi dan interpretasi penelitian sejarah!',
+                        answers: [
+                            { text: 'Verifikasi: Menguji keaslian bahan (kritik eksternal) dan kredibilitas isi (kritik internal)', points: 100, keywords: ['verifikasi', 'keaslian', 'kredibilitas'] },
+                            { text: 'Interpretasi: Peneliti melakukan penafsiran terhadap fakta-fakta sejarah', points: 80, keywords: ['interpretasi', 'penafsiran fakta'] },
+                            { text: 'Melihat hubungan keterkaitan dan kausalitas antar informasi', points: 60, keywords: ['kausalitas', 'keterkaitan'] },
+                            { text: 'Membuat rekonstruksi logis atas suatu peristiwa masa lalu', points: 40, keywords: ['rekonstruksi'] },
+                            { text: 'Analisis kritis terhadap validitas data', points: 20, keywords: ['analisis kritis'] },
+                            { text: 'Sintesis temuan fakta sejarah', points: 5, keywords: ['sintesis'] }
+                        ]
+                    },
+                    {
+                        type: 'survey',
+                        text: 'Jelaskan apa yang dimaksud dengan tahapan historiografi dalam penulisan sejarah!',
+                        answers: [
+                            { text: 'Proses penulisan kisah sejarah secara utuh', points: 100, keywords: ['penulisan kisah', 'sejarah'] },
+                            { text: 'Disajikan dalam bentuk narasi tulisan yang logis', points: 80, keywords: ['logis', 'narasi'] },
+                            { text: 'Disusun secara sistematis dan kronologis', points: 60, keywords: ['sistematis', 'kronologis'] },
+                            { text: 'Memiliki nilai kebermaknaan bagi pembaca', points: 40, keywords: ['bermakna'] },
+                            { text: 'Merupakan tahap akhir dari rangkaian penelitian sejarah', points: 20, keywords: ['tahap akhir'] },
+                            { text: 'Penyusunan laporan ilmiah atau publikasi hasil riset', points: 5, keywords: ['laporan ilmiah', 'publikasi'] }
+                        ]
+                    },
+                    {
+                        type: 'rebutan',
+                        text: 'Apakah nama tahap pertama dalam metodologi penelitian sejarah yang berfungsi untuk mengumpulkan sumber data?',
+                        answer: 'Heuristik',
+                        keywords: ['heuristik']
+                    },
+                    {
+                        type: 'rebutan',
+                        text: 'Apakah nama tahapan penelitian sejarah yang bertujuan untuk menguji keaslian dan keabsahan sumber data (kritik internal & eksternal)?',
+                        answer: 'Verifikasi',
+                        keywords: ['verifikasi']
+                    },
+                    {
+                        type: 'rebutan',
+                        text: 'Apakah nama tahap penafsiran makna serta penghubungan fakta-fakta sejarah dalam penelitian?',
+                        answer: 'Interpretasi',
+                        keywords: ['interpretasi']
+                    },
+                    {
+                        type: 'rebutan',
+                        text: 'Apakah nama tahap akhir dalam penelitian sejarah yang berupa proses penulisan kisah secara ilmiah?',
+                        answer: 'Historiografi',
+                        keywords: ['historiografi']
+                    },
+                    {
+                        type: 'rebutan',
+                        text: 'Sebutkan salah satu syarat penting dalam memilih topik penelitian sejarah selain harus unik dan bernilai!',
+                        answer: 'Orisinal / Kesatuan / Praktis',
+                        keywords: ['orisinal', 'kesatuan', 'praktis', 'asli']
+                    }
+                ]
+            }
+        ];
+
+        
+        
+        
+        
+
+        
+
+        
+
+        
+        function playApplauseSound() {
+            try {
+                const ctx = getAudioContext();
+                const now = ctx.currentTime;
+                const bufferSize = ctx.sampleRate * 2.5;
+                const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+                const data = buffer.getChannelData(0);
+                for (let i = 0; i < bufferSize; i++) {
+                    data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / bufferSize, 1.5);
+                }
+                const noise = ctx.createBufferSource();
+                noise.buffer = buffer;
+
+                const filter = ctx.createBiquadFilter();
+                filter.type = 'bandpass';
+                filter.frequency.setValueAtTime(800, now);
+                filter.Q.setValueAtTime(1.5, now);
+
+                const gain = ctx.createGain();
+                gain.gain.setValueAtTime(0.01, now);
+                gain.gain.linearRampToValueAtTime(0.4, now + 0.3);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 2.4);
+
+                noise.connect(filter);
+                filter.connect(gain);
+                gain.connect(ctx.destination);
+                noise.start(now);
+            } catch (e) {}
+        }
+
+        function startGameFromOpening() {
+            const nameA = document.getElementById('setup-teamA-name').value.trim();
+            const nameB = document.getElementById('setup-teamB-name').value.trim();
+            if (nameA) document.getElementById('teamA-name-text').innerText = nameA;
+            if (nameB) document.getElementById('teamB-name-text').innerText = nameB;
+
+            // Mainkan suara tepuk tangan saat tirai dibuka
+            playApplauseSound();
+
+            // Animasi tirai terbuka ke kiri dan kanan
+            const curtainLeft = document.getElementById('curtain-left');
+            const curtainRight = document.getElementById('curtain-right');
+            const openingCard = document.getElementById('opening-card');
+
+            if (curtainLeft) curtainLeft.style.transform = 'translateX(-100%)';
+            if (curtainRight) curtainRight.style.transform = 'translateX(100%)';
+            if (openingCard) openingCard.style.opacity = '0';
+
+            setTimeout(() => {
+                const openingEl = document.getElementById('opening-screen');
+                if (openingEl) openingEl.remove();
+            }, 1000);
+        }
+
+        function renameTeam(team) {
+            const currentName = team === 'teamA' ? document.getElementById('teamA-name-text').innerText : document.getElementById('teamB-name-text').innerText;
+            const newName = prompt("Masukkan nama baru untuk " + currentName + ":", currentName);
+            if (newName && newName.trim() !== "") {
+                if (team === 'teamA') {
+                    document.getElementById('teamA-name-text').innerText = newName.trim();
+                } else {
+                    document.getElementById('teamB-name-text').innerText = newName.trim();
+                }
+            }
+        }
+
+        function updateActiveTeamUI() {
+            const teamACard = document.getElementById('teamA-card');
+            const teamBCard = document.getElementById('teamB-card');
+            const badgeA = document.getElementById('badge-active-teamA');
+            const badgeB = document.getElementById('badge-active-teamB');
+
+            if (activeTeam === 'teamA') {
+                teamACard.classList.add('active-team-glow-blue');
+                teamBCard.classList.remove('active-team-glow-red');
+                if (badgeA) badgeA.classList.remove('hidden');
+                if (badgeB) badgeB.classList.add('hidden');
+            } else {
+                teamBCard.classList.add('active-team-glow-red');
+                teamACard.classList.remove('active-team-glow-blue');
+                if (badgeB) badgeB.classList.remove('hidden');
+                if (badgeA) badgeA.classList.add('hidden');
+            }
+        }
+
+        function setActiveTeam(team) {
+            activeTeam = team;
+            updateActiveTeamUI();
+        }
+
+        function switchActiveTeam() {
+            activeTeam = (activeTeam === 'teamA') ? 'teamB' : 'teamA';
+            updateActiveTeamUI();
+        }
+
+        function initGame() {
+            roundIndicatorEl = document.getElementById('round-indicator');
+            questionTypeBadgeEl = document.getElementById('question-type-badge');
+            questionNumberTagEl = document.getElementById('question-number-tag');
+            questionTextEl = document.getElementById('question-text');
+            surveyBoardEl = document.getElementById('survey-board');
+            rebutanBoardEl = document.getElementById('rebutan-board');
+            rebutanTimerDisplayEl = document.getElementById('rebutan-timer-display');
+            rebutanAnswerBoxEl = document.getElementById('rebutan-answer-box');
+            rebutanAnswerTextEl = document.getElementById('rebutan-answer-text');
+            showRebutanBtnEl = document.getElementById('show-rebutan-btn');
+            operatorInputSectionEl = document.getElementById('operator-input-section');
+            scoreTeamAEl = document.getElementById('score-teamA');
+            scoreTeamBEl = document.getElementById('score-teamB');
+            roundScoreEl = document.getElementById('current-round-score');
+            navGridEl = document.getElementById('question-nav-grid');
+
+            renderNavGrid();
+            updateActiveTeamUI();
+            loadQuestion(0, 0);
+        }
+
+        function renderNavGrid() {
+            navGridEl.innerHTML = '';
+            for (let r = 0; r < 5; r++) {
+                for (let q = 0; q < 10; q++) {
+                    const btn = document.createElement('button');
+                    btn.className = `w-9 h-9 rounded-xl font-bold text-xs transition border border-slate-700 bg-slate-800 text-slate-300 hover:bg-slate-700`;
+                    btn.innerText = `R${r+1}-${q+1}`;
+                    btn.onclick = () => loadQuestion(r, q);
+                    btn.id = `nav-btn-${r}-${q}`;
+                    navGridEl.appendChild(btn);
+                }
+            }
+        }
+
+        function updateNavGridHighlights() {
+            for (let r = 0; r < 5; r++) {
+                for (let q = 0; q < 10; q++) {
+                    const btn = document.getElementById(`nav-btn-${r}-${q}`);
+                    if (btn) {
+                        if (r === currentRoundIdx && q === currentQuestionIdx) {
+                            btn.className = 'w-9 h-9 rounded-xl font-bold text-xs transition bg-amber-500 text-slate-950 border border-amber-400 font-black shadow-lg';
+                        } else {
+                            btn.className = 'w-9 h-9 rounded-xl font-bold text-xs transition border border-slate-700 bg-slate-800 text-slate-300 hover:bg-slate-700';
+                        }
+                    }
+                }
+            }
+        }
+
+        function loadQuestion(rIdx, qIdx) {
+            currentRoundIdx = rIdx;
+            currentQuestionIdx = qIdx;
+            const q = gameData[rIdx].questions[qIdx];
+
+            roundIndicatorEl.innerText = `Ronde ${rIdx + 1} (Soal ${qIdx + 1}/10)`;
+            questionTextEl.innerText = q.text;
+
+            resetRebutanTimer();
+            updateNavGridHighlights();
+
+            const inputEl = document.getElementById('answer-input');
+            if (inputEl) inputEl.value = '';
+
+            if (q.type === 'survey') {
+                questionTypeBadgeEl.innerText = `Poin (${q.answers.length} Jawaban)`;
+                questionNumberTagEl.innerText = `SOAL POIN - SURVEY ${q.answers.length} JAWABAN`;
+                surveyBoardEl.classList.remove('hidden');
+                surveyBoardEl.classList.add('grid');
+                rebutanBoardEl.classList.add('hidden');
+                rebutanBoardEl.classList.remove('flex');
+
+                revealedAnswers = new Array(q.answers.length).fill(false);
+                renderSurveyBoard(q);
+            } else {
+                questionTypeBadgeEl.innerText = 'Soal Rebutan';
+                questionNumberTagEl.innerText = 'SOAL REBUTAN - JAWABAN PENDEK';
+                surveyBoardEl.classList.add('hidden');
+                surveyBoardEl.classList.remove('grid');
+                rebutanBoardEl.classList.remove('hidden');
+                rebutanBoardEl.classList.add('flex');
+
+                rebutanAnswerTextEl.innerText = q.answer;
+                rebutanAnswerBoxEl.classList.add('hidden');
+                showRebutanBtnEl.classList.remove('hidden');
+            }
+
+            resetRoundScoreState();
+        }
+
+        function renderSurveyBoard(q) {
+            surveyBoardEl.innerHTML = '';
+            q.answers.forEach((ans, idx) => {
+                const card = document.createElement('div');
+                const isFlipped = revealedAnswers[idx];
+                card.className = `card-flip h-16 cursor-pointer`;
+                card.onclick = () => toggleAnswer(idx);
+
+                card.innerHTML = `
+                    <div class="card-inner w-full h-full relative border border-slate-700 rounded-xl ${isFlipped ? 'flipped' : ''}">
+                        <div class="card-front absolute inset-0 bg-slate-800 rounded-xl flex justify-between items-center px-4 font-bold text-amber-400">
+                            <span class="w-8 h-8 rounded-lg bg-slate-900 border border-slate-700 flex items-center justify-center">${idx + 1}</span>
+                            <span class="text-slate-500 font-game">--- PASIF ---</span>
+                        </div>
+                        <div class="card-back absolute inset-0 bg-gradient-to-r from-amber-600 to-amber-500 rounded-xl flex justify-between items-center px-4 font-bold text-slate-950 shadow-md">
+                            <span>${ans.text}</span>
+                            <span class="bg-slate-950 text-amber-400 px-3 py-1 rounded-lg font-game">${ans.points}</span>
+                        </div>
+                    </div>
+                `;
+                surveyBoardEl.appendChild(card);
+            });
+        }
+
+        function startRebutanTimer() {
+            if (timerInterval) return;
+            timerInterval = setInterval(() => {
+                if (timerTime > 0) {
+                    timerTime--;
+                    updateTimerDisplay();
+                } else {
+                    pauseRebutanTimer();
+                    playWrongSound();
+                }
+            }, 1000);
+        }
+
+        function pauseRebutanTimer() {
+            clearInterval(timerInterval);
+            timerInterval = null;
+        }
+
+        function resetRebutanTimer() {
+            pauseRebutanTimer();
+            timerTime = 60;
+            updateTimerDisplay();
+        }
+
+        function updateTimerDisplay() {
+            const mins = String(Math.floor(timerTime / 60)).padStart(2, '0');
+            const secs = String(timerTime % 60).padStart(2, '0');
+            rebutanTimerDisplayEl.innerText = `${mins}:${secs}`;
+        }
+
+        function showWrongAnimation() {
+            playWrongSound();
+            const overlay = document.getElementById('strike-overlay');
+            overlay.classList.remove('hidden');
+            setTimeout(() => { overlay.classList.add('hidden'); }, 1200);
+        }
+
+        function showCorrectAnimation(points) {
+            playCorrectSound();
+            const overlay = document.getElementById('score-popup-overlay');
+            const textEl = document.getElementById('score-popup-text');
+            textEl.innerText = `+${points} POIN!`;
+            overlay.classList.remove('hidden');
+            setTimeout(() => { overlay.classList.add('hidden'); }, 1200);
+        }
+
+        function handleInputKeydown(event) {
+            if (event.key === 'Enter') checkAnswerInput();
+        }
+
+        function checkAnswerInput() {
+            const inputEl = document.getElementById('answer-input');
+            const userQuery = inputEl.value.trim().toLowerCase();
+            if (!userQuery) return;
+
+            const q = gameData[currentRoundIdx].questions[currentQuestionIdx];
+
+            if (q.type === 'survey') {
+                let foundIdx = -1;
+                // Split user query into words for flexible matching
+                const userWords = userQuery.split(/\s+/);
+
+                q.answers.forEach((ans, idx) => {
+                    if (foundIdx !== -1) return;
+                    const text = ans.text.toLowerCase();
+                    
+                    // Check direct inclusion or keyword match or word overlap
+                    let matched = false;
+                    if (text.includes(userQuery) || userQuery.includes(text)) {
+                        matched = true;
+                    }
+                    if (ans.keywords && ans.keywords.some(kw => userQuery.includes(kw) || kw.includes(userQuery))) {
+                        matched = true;
+                    }
+                    // Core meaning match: if user query shares significant words with keywords or text
+                    if (!matched && ans.keywords) {
+                        matched = ans.keywords.some(kw => {
+                            const kwWords = kw.split(/\s+/);
+                            return kwWords.some(kwWord => kwWord.length > 2 && userQuery.includes(kwWord));
+                        });
+                    }
+
+                    if (matched) {
+                        foundIdx = idx;
+                    }
+                });
+
+                if (foundIdx !== -1) {
+                    if (!revealedAnswers[foundIdx]) {
+                        revealedAnswers[foundIdx] = true;
+                        calculateRoundScore();
+                        renderSurveyBoard(q);
+                        
+                        addScore(activeTeam, q.answers[foundIdx].points);
+                        showCorrectAnimation(q.answers[foundIdx].points);
+                    }
+                    inputEl.value = '';
+                } else {
+                    triggerManualWrong();
+                    inputEl.value = '';
+                }
+            } else if (q.type === 'rebutan') {
+                const ansText = q.answer.toLowerCase();
+                let matched = ansText.includes(userQuery) || userQuery.includes(ansText);
+                if (!matched && q.keywords) {
+                    matched = q.keywords.some(kw => userQuery.includes(kw) || kw.includes(userQuery));
+                }
+
+                if (matched) {
+                    revealRebutanAnswer();
+                    addScore(activeTeam, 50);
+                    showCorrectAnimation(50);
+                    inputEl.value = '';
+                } else {
+                    triggerManualWrong();
+                    inputEl.value = '';
+                }
+            }
+        }
+
+        function triggerManualWrong() {
+            addStrike(activeTeam);
+        }
+
+        function toggleAnswer(idx) {
+            const q = gameData[currentRoundIdx].questions[currentQuestionIdx];
+            if (q.type !== 'survey') return;
+
+            const wasRevealed = revealedAnswers[idx];
+            revealedAnswers[idx] = !revealedAnswers[idx];
+
+            if (!wasRevealed) {
+                addScore(activeTeam, q.answers[idx].points);
+                showCorrectAnimation(q.answers[idx].points);
+            }
+
+            calculateRoundScore();
+            renderSurveyBoard(q);
+        }
+
+        function revealAllAnswers() {
+            const q = gameData[currentRoundIdx].questions[currentQuestionIdx];
+            if (q.type === 'survey') {
+                revealedAnswers = revealedAnswers.map(() => true);
+                calculateRoundScore();
+                renderSurveyBoard(q);
+            } else {
+                revealRebutanAnswer();
+                showCorrectAnimation(50);
+            }
+        }
+
+        function calculateRoundScore() {
+            const q = gameData[currentRoundIdx].questions[currentQuestionIdx];
+            if (q.type !== 'survey') return;
+
+            currentRoundScore = q.answers.reduce((acc, curr, idx) => {
+                return acc + (revealedAnswers[idx] ? curr.points : 0);
+            }, 0);
+
+            roundScoreEl.innerText = currentRoundScore;
+        }
+
+        function revealRebutanAnswer() {
+            rebutanAnswerBoxEl.classList.remove('hidden');
+            showRebutanBtnEl.classList.add('hidden');
+            currentRoundScore = 50;
+            roundScoreEl.innerText = 50;
+            pauseRebutanTimer();
+        }
+
+        function addScore(team, amount) {
+            const ptsToAdd = amount !== undefined ? amount : currentRoundScore;
+            if (team === 'teamA') {
+                scoreTeamA += ptsToAdd;
+                scoreTeamAEl.innerText = scoreTeamA;
+            } else {
+                scoreTeamB += ptsToAdd;
+                scoreTeamBEl.innerText = scoreTeamB;
+            }
+        }
+
+        function addStrike(team) {
+            let reachedMax = false;
+            if (team === 'teamA') {
+                if (strikesTeamA < 3) {
+                    strikesTeamA++;
+                    if (strikesTeamA === 3) reachedMax = true;
+                }
+                renderStrikes('strikes-teamA', strikesTeamA);
+            } else {
+                if (strikesTeamB < 3) {
+                    strikesTeamB++;
+                    if (strikesTeamB === 3) reachedMax = true;
+                }
+                renderStrikes('strikes-teamB', strikesTeamB);
+            }
+            
+            showWrongAnimation();
+
+            if (reachedMax) {
+                setTimeout(() => {
+                    switchActiveTeam();
+                }, 1300);
+            }
+        }
+
+        function clearStrikes() {
+            strikesTeamA = 0;
+            strikesTeamB = 0;
+            renderStrikes('strikes-teamA', 0);
+            renderStrikes('strikes-teamB', 0);
+        }
+
+        function renderStrikes(containerId, count) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+            for (let i = 0; i < 3; i++) {
+                const strikeSpan = document.createElement('span');
+                strikeSpan.className = i < count ? 'text-rose-500 text-xl font-black animate-bounce' : 'text-slate-700 text-xl font-black';
+                strikeSpan.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+                container.appendChild(strikeSpan);
+            }
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIdx < 9) {
+                loadQuestion(currentRoundIdx, currentQuestionIdx + 1);
+            } else if (currentRoundIdx < 4) {
+                loadQuestion(currentRoundIdx + 1, 0);
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestionIdx > 0) {
+                loadQuestion(currentRoundIdx, currentQuestionIdx - 1);
+            } else if (currentRoundIdx > 0) {
+                loadQuestion(currentRoundIdx - 1, 9);
+            }
+        }
+
+        function resetRoundScoreState() {
+            currentRoundScore = 0;
+            roundScoreEl.innerText = 0;
+            clearStrikes();
+        }
+
+        function resetGame() {
+            scoreTeamA = 0;
+            scoreTeamB = 0;
+            scoreTeamAEl.innerText = 0;
+            scoreTeamBEl.innerText = 0;
+            resetRoundScoreState();
+            loadQuestion(0, 0);
+        }
+
+        window.onload = function() {
+            initGame();
+        };
+    </script>
+</body>
+</html>
